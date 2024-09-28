@@ -41,9 +41,33 @@ const useNavigation = () => {
     window.addEventListener('mousemove', onMouseMove)
   }
 
+  /**
+   * For Mobile
+   */
+  const onTouchMove = (event) => {
+    move(event.touches[0].clientX, event.touches[0].clientY)
+  }
+  const onTouchEnd = (event) => {
+    window.removeEventListener('touchend', onTouchEnd)
+    window.removeEventListener('touchmove', onTouchMove)
+  }
+  const onTouchStart = (event) => {
+    down(event.touches[0].clientX, event.touches[0].clientY)
+
+    window.addEventListener('touchend', onTouchEnd)
+    window.addEventListener('touchmove', onTouchMove)
+  }
+
   useEffect(() => {
+    const onContextMenu = (e) => e.preventDefault()
     window.addEventListener('mousedown', onMouseDown)
-    return () => window.removeEventListener('mousedown', onMouseDown)
+    window.addEventListener('touchstart', onTouchStart)
+    window.addEventListener('contextmenu', onContextMenu)    
+    return () => {
+        window.removeEventListener('mousedown', onMouseDown)
+        window.removeEventListener('contextmenu', onContextMenu)
+        window.removeEventListener('touchstart', onTouchStart)
+    }
   }, [])
   return {
     drag,
