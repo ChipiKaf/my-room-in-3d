@@ -14,13 +14,18 @@ const useSpherical = () => {
     value.current.phi -= valueToAdd
   }, [])
 
+  const zoom = (delta) => {
+    value.current.radius += delta * 0.01
+  }
+
 
   return {
     value,
     smoothed,
     smoothing,
     updateTheta,
-    updatePhi
+    updatePhi,
+    zoom
   };
 };
 
