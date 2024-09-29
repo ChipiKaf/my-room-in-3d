@@ -71,7 +71,7 @@ export default function Experience() {
   });
   const bakedTexture = useLoader(
     THREE.TextureLoader,
-    "textures/night-texture.jpg"
+    "textures/day-texture.jpg"
   ); // Load baked texture
 
   useEffect(() => {
