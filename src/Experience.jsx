@@ -33,10 +33,38 @@ export default function Experience() {
         view.target.value.current.add(up)
         view.target.value.current.add(right)
 
+        // Apply limits
+
+        view.target.value.current.x = Math.min(Math.max(view.target.value.current.x, view.target.limits.x.min), view.target.limits.x.max)
+        view.target.value.current.y = Math.min(Math.max(view.target.value.current.y, view.target.limits.y.min), view.target.limits.y.max)
+        view.target.value.current.z = Math.min(Math.max(view.target.value.current.z, view.target.limits.z.min), view.target.limits.z.max)
+
     }
 
     view.drag.resetDelta();
     // smoothing
+
+    view.target.smoothed.current.x = THREE.MathUtils.damp(
+      view.target.smoothed.current.x,
+      view.target.value.current.x,
+      view.target.smoothing,
+      delta
+    );
+
+    view.target.smoothed.current.y = THREE.MathUtils.damp(
+      view.target.smoothed.current.y,
+      view.target.value.current.y,
+      view.target.smoothing,
+      delta
+    );
+
+    view.target.smoothed.current.z = THREE.MathUtils.damp(
+      view.target.smoothed.current.z,
+      view.target.value.current.z,
+      view.target.smoothing,
+      delta
+    );
+
     view.spherical.smoothed.current.radius = THREE.MathUtils.damp(
       view.spherical.smoothed.current.radius,
       view.spherical.value.current.radius,
@@ -59,9 +87,9 @@ export default function Experience() {
     );
     const viewPosition = new THREE.Vector3();
     viewPosition.setFromSpherical(view.spherical.smoothed.current);
-    viewPosition.add(view.target.value.current);
+    viewPosition.add(view.target.smoothed.current);
     camera.position.copy(viewPosition);
-    camera.lookAt(view.target.value.current);
+    camera.lookAt(view.target.smoothed.current);
   });
   // Load model and baked texture
   const model = useLoader(GLTFLoader, "models/room-latest.glb", (loader) => {
