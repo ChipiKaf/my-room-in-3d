@@ -14,34 +14,47 @@ export default function Experience() {
   const view = useNavigation();
 
   useFrame((state, delta) => {
+    // zoom
+    view.spherical.value.current.radius += view.spherical.delta.current * 0.01
+    // Apply limits
+    view.spherical.value.current.radius = Math.min(Math.max(view.spherical.value.current.radius, view.spherical.limits.radius.min), view.spherical.limits.radius.max)
+      
     if (view.canMove.current) {
       const theta = view.drag.getTheta(size);
       const phi = view.drag.getPhi(size);
 
       view.spherical.updateTheta(theta);
       view.spherical.updatePhi(phi);
+
+      // Apply limits
+
+      view.spherical.value.current.theta = Math.min(Math.max(view.spherical.value.current.theta, view.spherical.limits.theta.min), view.spherical.limits.theta.max)
+      view.spherical.value.current.phi = Math.min(Math.max(view.spherical.value.current.phi, view.spherical.limits.phi.min), view.spherical.limits.phi.max)
+
+
     } else {
-        const up = new THREE.Vector3(0, 1, 0)
-        const right = new THREE.Vector3(-1, 0, 0)
+      const up = new THREE.Vector3(0, 1, 0)
+      const right = new THREE.Vector3(-1, 0, 0)
 
-        up.applyQuaternion(camera.quaternion)
-        right.applyQuaternion(camera.quaternion)
+      up.applyQuaternion(camera.quaternion)
+      right.applyQuaternion(camera.quaternion)
 
-        up.multiplyScalar(view.drag.delta.current.y * 0.01)
-        right.multiplyScalar(view.drag.delta.current.x * 0.01)
+      up.multiplyScalar(view.drag.delta.current.y * 0.01)
+      right.multiplyScalar(view.drag.delta.current.x * 0.01)
 
-        view.target.value.current.add(up)
-        view.target.value.current.add(right)
+      view.target.value.current.add(up)
+      view.target.value.current.add(right)
 
-        // Apply limits
+      // Apply limits
 
-        view.target.value.current.x = Math.min(Math.max(view.target.value.current.x, view.target.limits.x.min), view.target.limits.x.max)
-        view.target.value.current.y = Math.min(Math.max(view.target.value.current.y, view.target.limits.y.min), view.target.limits.y.max)
-        view.target.value.current.z = Math.min(Math.max(view.target.value.current.z, view.target.limits.z.min), view.target.limits.z.max)
+      view.target.value.current.x = Math.min(Math.max(view.target.value.current.x, view.target.limits.x.min), view.target.limits.x.max)
+      view.target.value.current.y = Math.min(Math.max(view.target.value.current.y, view.target.limits.y.min), view.target.limits.y.max)
+      view.target.value.current.z = Math.min(Math.max(view.target.value.current.z, view.target.limits.z.min), view.target.limits.z.max)
 
     }
 
     view.drag.resetDelta();
+    view.spherical.delta.current = 0
     // smoothing
 
     view.target.smoothed.current.x = THREE.MathUtils.damp(
