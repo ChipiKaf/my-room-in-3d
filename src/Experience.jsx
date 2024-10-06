@@ -45,10 +45,9 @@ export default function Experience() {
   const view = useNavigation();
 
   useFrame((state, delta) => {
+    pcStripMaterial.current.uniforms.uTime.value += 0.01 / 1.3;
     // zoom
-    if (pcStripMaterial.current.uniforms.uTime.value >= 2) pcStripMaterial.current.uniforms.uTime.value = 0
-    pcStripMaterial.current.uniforms.uTime.value += 0.03;
-    console.log(pcStripMaterial.current.uniforms.uTime);
+    
     view.spherical.value.current.radius += view.spherical.delta.current * 0.01;
     // Apply limits
     view.spherical.value.current.radius = Math.min(
@@ -205,7 +204,6 @@ export default function Experience() {
   }, [model, bakedTexture]);
 
   useEffect(() => {
-    console.log(pcStrip.scene);
     pcStrip.scene.position.z += 0.01;
     pcStrip.scene.children.forEach((child) => {
       if (child.isMesh) {
@@ -220,8 +218,6 @@ export default function Experience() {
   
         const minY = boundingBox.min.y;
         const maxY = boundingBox.max.y;
-  
-        console.log(`Mesh: ${child.name}, minY: ${minY}, maxY: ${maxY}`);
   
         // Update the uniform values
         pcStripMaterial.current.uniforms.uMinY.value = minY;
