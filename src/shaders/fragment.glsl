@@ -28,7 +28,11 @@ void main() {
         baseColor = mix(orange, green, blendFactor2);
     }
 
-    gl_FragColor = vec4(baseColor, 1.0);
+    float border = 0.015;
+    if (vNormalizedY >= loopTime - border && vNormalizedY <= loopTime + border || vNormalizedY + 1.0 >= loopTime - border && vNormalizedY + 1.0 <= loopTime + border) {
+        gl_FragColor = vec4(mix(orange, green, 0.7), 0.95);
+        }
+    else gl_FragColor = vec4(baseColor, 1.0);    
 
     // Include Three.js tonemapping and colorspace conversion
     #include <tonemapping_fragment>

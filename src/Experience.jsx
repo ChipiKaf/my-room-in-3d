@@ -45,7 +45,7 @@ export default function Experience() {
   const view = useNavigation();
 
   useFrame((state, delta) => {
-    pcStripMaterial.current.uniforms.uTime.value += 0.01 / 1.3;
+    pcStripMaterial.current.uniforms.uTime.value += 0.01;
     // zoom
     
     view.spherical.value.current.radius += view.spherical.delta.current * 0.01;
