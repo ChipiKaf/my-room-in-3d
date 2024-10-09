@@ -1,6 +1,6 @@
 # My Room in 3D
 
-This project is a work-in-progress 3D representation of a room using React, Three.js, and `@react-three/fiber`. The scene includes various models, textures, and interactive elements that bring the virtual space to life.
+This project is a work-in-progress 3D representation of my room using React, Three.js, and `@react-three/fiber`. The scene includes various models, textures, and interactive elements that bring the virtual space to life. (Note, I did not push the glb models to the repo. Email me for the models)
 
 ## Table of Contents
 
